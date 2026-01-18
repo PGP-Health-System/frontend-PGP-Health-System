@@ -16,9 +16,7 @@ const FUNCOES = [
   { id: 'estoque', label: 'Estoque', icon: <InventoryIcon />, color: 'primary' },
   { id: 'faturamento', label: 'Faturamento', icon: <ReceiptLongIcon />, color: 'primary' },
   { id: 'cadastro', label: 'Pacientes', icon: <PersonAddIcon />, color: 'primary' },
-  ...Array.from({ length: 24 }).map((_, i) => ({
-    id: `config-${i}`, label: `Ajustes ${i + 1}`, icon: <SettingsIcon />, color: 'primary'
-  }))
+  { id: 'cadastro', label: 'Administração', icon: <SettingsIcon />, color: 'primary' },
 ];
 
 interface GridFuncoesProps {
