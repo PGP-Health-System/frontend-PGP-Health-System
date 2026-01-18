@@ -5,29 +5,46 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
-          solidBg: '#007FFF',
-          solidHoverBg: '#0066CC',
+          50: '#eff6ff',
+          500: '#2563EB',
+          600: '#1E40AF',
+          solidBg: '#2563EB',
+          solidHoverBg: '#1E40AF',
         },
         background: {
-          body: '#f4f6f8',
-        },
-      },
-    },
-    dark: {
-      palette: {
-        primary: {
-          solidBg: '#007FFF',
-          solidHoverBg: '#3399FF',
-        },
-        background: {
-          body: '#0b0d0e',
+          body: '#F8FAFC',    // Fundo geral
+          surface: '#FFFFFF', // Cards e Tabelas
         },
       },
     },
   },
-  fontFamily: {
-    display: 'Inter, var(--joy-fontFamily-fallback)',
-    body: 'Inter, var(--joy-fontFamily-fallback)',
+  components: {
+    JoyCard: {
+      styleOverrides: {
+        root: {
+          border: 'none', // Remove bordas de cards/funções
+          boxShadow: 'none', 
+          borderRadius: '8px',
+        },
+      },
+    },
+    JoySheet: {
+      styleOverrides: {
+        root: {
+          border: 'none', // Remove bordas de containers Sheet
+          boxShadow: 'none',
+        },
+      },
+    },
+    JoyListItemButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: '#F1F5F9', // Hover cinza muito leve
+          },
+        },
+      },
+    },
   },
 });
 

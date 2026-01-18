@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
-import theme from './theme/theme'; // Seu arquivo de tema
+import theme from './theme/theme'; 
 import Login from './modules/Login/Login';
 import MainLayout from './layouts/MainLayout';
 
@@ -19,9 +19,15 @@ export default function App() {
   };
 
   return (
-    // O Provider DEVE envolver a lógica do IF
-    <CssVarsProvider theme={theme} defaultMode="light">
-      {/* O Baseline garante que o fundo escuro/claro se aplique ao <body> */}
+    <CssVarsProvider 
+      theme={theme} 
+      defaultMode="light" 
+      // modeStorageKey impede que ele tente recuperar uma escolha de "dark" salva anteriormente
+      modeStorageKey="sistema-medico-mode" 
+      // disableNestedContext garante estabilidade no tema único
+      disableNestedContext
+    >
+      {/* O Baseline é fundamental para aplicar a cor #f4f6f8 que definimos no body do tema */}
       <CssBaseline /> 
 
       {!isAuthenticated ? (

@@ -15,8 +15,8 @@ const FUNCOES = [
   { id: 'agenda', label: 'Agenda', icon: <EventNoteIcon />, color: 'primary' },
   { id: 'estoque', label: 'Estoque', icon: <InventoryIcon />, color: 'primary' },
   { id: 'faturamento', label: 'Faturamento', icon: <ReceiptLongIcon />, color: 'primary' },
-  { id: 'cadastro', label: 'Pacientes', icon: <PersonAddIcon />, color: 'primary' },
-  { id: 'cadastro', label: 'Administração', icon: <SettingsIcon />, color: 'primary' },
+  { id: 'pacientes', label: 'Pacientes', icon: <PersonAddIcon />, color: 'primary' }, 
+  { id: 'admin', label: 'Administração', icon: <SettingsIcon />, color: 'primary' },
 ];
 
 interface GridFuncoesProps {
@@ -95,10 +95,10 @@ export default function GridFuncoes({ onOpenModule }: GridFuncoesProps) {
           }}
         >
           {funcoesFiltradas.map((item) => (
-            <Card
-              key={item.id}
-              variant="plain"
-              onClick={() => onOpenModule(item.id, item.label)}
+          <Card
+            key={item.id} // Agora que os IDs são únicos, o React funcionará corretamente
+            variant="plain"
+            onClick={() => onOpenModule(item.id, item.label)}
               sx={{
                 cursor: 'pointer',
                 scrollSnapAlign: 'start',

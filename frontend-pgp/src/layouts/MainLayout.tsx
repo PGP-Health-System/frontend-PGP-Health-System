@@ -100,6 +100,7 @@ export default function MainLayout({ userName = "Administrador", onLogout }: Mai
   return (
     <Box sx={{ 
       display: 'flex', flexDirection: 'column', height: '100vh', width: '100vw', overflow: 'hidden',
+      bgcolor: '#F8FAFC',
       '& *': { '--joy-focus-thickness': '0px !important', outline: 'none !important' } 
     }}>
       
@@ -108,7 +109,7 @@ export default function MainLayout({ userName = "Administrador", onLogout }: Mai
       </Snackbar>
 
       {contextMenu && (
-        <Box sx={{ position: 'fixed', top: contextMenu.y, left: contextMenu.x, zIndex: 9999, minWidth: 180, bgcolor: 'background.surface', boxShadow: 'md', borderRadius: 'md', border: '1px solid', borderColor: 'divider', p: 0.5 }} onClick={(e) => e.stopPropagation()}>
+        <Box sx={{ position: 'fixed', top: contextMenu.y, left: contextMenu.x, zIndex: 9999, minWidth: 180, bgcolor: 'background.surface', boxShadow: 'md', borderRadius: 'md', border: 'none', p: 0.5 }} onClick={(e) => e.stopPropagation()}>
           <List size="sm" sx={{ '--ListItem-radius': '8px' }}>
             <ListItemButton onClick={handleRefreshTab}>
               <ListItemDecorator><RefreshIcon fontSize="small" /></ListItemDecorator>
@@ -118,22 +119,77 @@ export default function MainLayout({ userName = "Administrador", onLogout }: Mai
         </Box>
       )}
 
-      <Sheet variant="soft" color="primary" sx={{ pt: 1, px: 2, width: '100%', display: 'flex', gap: 0.5, alignItems: 'flex-end', borderBottom: '1px solid', borderColor: 'divider' }}>
+      {/* HEADER COM DEGRADÊ */}
+      <Sheet 
+        variant="solid" 
+        sx={{ 
+          pt: 1, px: 2, 
+          background: 'linear-gradient(to right, #0c1e41, #1e3a8a)', 
+          display: 'flex', 
+          gap: 0.5, 
+          alignItems: 'flex-end',
+          borderBottom: 'none',
+        }}
+      >
         <Box sx={{ display: 'flex', gap: 0.5, flex: 1, overflow: 'hidden' }}>
           {openTabs.map((tab, index) => {
             const isSelected = activeTabIndex === index;
+            const isHome = tab.id === 'home';
+
             return (
-              <Box key={tab.id} onClick={() => setActiveTabIndex(index)} onContextMenu={(e) => onRightClick(e, index)}
+              <Box 
+                key={tab.id} 
+                onClick={() => setActiveTabIndex(index)} 
+                onContextMenu={(e) => onRightClick(e, index)}
                 sx={{
-                  minHeight: 52, padding: '0 20px', display: 'flex', alignItems: 'center', gap: 1, cursor: isSelected ? 'default' : 'pointer', borderTopLeftRadius: '12px', borderTopRightRadius: '12px',
-                  bgcolor: isSelected ? 'background.body' : 'transparent', color: isSelected ? 'primary.plainColor' : 'rgba(255,255,255,0.7)',
-                  '&:hover': { bgcolor: isSelected ? 'background.body' : 'rgba(255,255,255,0.05)', color: isSelected ? 'primary.plainColor' : 'rgba(255,255,255,0.9)' }
+                  width: isHome ? 'auto' : 180,
+                  minWidth: isHome ? 60 : 120,
+                  flexShrink: 0,
+                  minHeight: 50, 
+                  padding: isHome ? '0 15px' : '0 16px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: isHome ? 'center' : 'space-between',
+                  gap: 1, 
+                  cursor: 'pointer', 
+                  borderTopLeftRadius: '8px', 
+                  borderTopRightRadius: '8px',
+                  bgcolor: isSelected ? '#F8FAFC' : 'transparent', 
+                  color: isSelected ? '#2563EB' : 'rgba(255,255,255,0.8)',
+                  transition: '0.2s',
+                  '&:hover': { 
+                    bgcolor: isSelected ? '#F8FAFC' : 'rgba(255,255,255,0.1)', 
+                    color: isSelected ? '#2563EB' : '#FFFFFF' 
+                  }
                 }}
               >
-                {tab.id === 'home' && <HomeIcon fontSize="small" />}
-                <Typography level="title-sm" sx={{ color: 'inherit', fontWeight: isSelected ? 600 : 500 }}>{tab.label}</Typography>
-                {tab.id !== 'home' && (
-                  <IconButton size="sm" variant="plain" onClick={(e) => closeTab(index, e)} sx={{ ml: 1, color: 'inherit', '&:hover': { bgcolor: 'rgba(0,0,0,0.1)', color: 'danger.plainColor' } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, overflow: 'hidden' }}>
+                  {isHome && <HomeIcon sx={{ fontSize: 18 }} />}
+                  <Typography 
+                    level="title-sm" 
+                    sx={{ 
+                      color: 'inherit', 
+                      fontWeight: isSelected ? 600 : 400,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: isHome && !isSelected ? 'none' : 'block' 
+                    }}
+                  >
+                    {tab.label}
+                  </Typography>
+                </Box>
+
+                {!isHome && (
+                  <IconButton 
+                    size="sm" 
+                    variant="plain" 
+                    onClick={(e) => closeTab(index, e)} 
+                    sx={{ 
+                      p: 0, minWidth: 24, minHeight: 24,
+                      color: 'inherit', '&:hover': { bgcolor: 'rgba(0,0,0,0.1)', borderRadius: '50%' } 
+                    }}
+                  >
                     <CloseIcon sx={{ fontSize: 14 }} />
                   </IconButton>
                 )}
@@ -144,48 +200,73 @@ export default function MainLayout({ userName = "Administrador", onLogout }: Mai
 
         <Box sx={{ flexGrow: 0, ml: 'auto' }} />
 
-        <Box onClick={(event) => setAnchorEl(event.currentTarget)} sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1, ml: 2, cursor: 'pointer', p: 0.8, borderRadius: 'md', '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' } }}>
-          <Typography level="title-sm" sx={{ color: 'white', fontWeight: 600 }}>{userName}</Typography>
-          <Avatar size="sm" variant="soft" color="primary"><PersonIcon /></Avatar>
-        </Box>
+        {/* PERFIL */}
+        <Box 
+  onClick={(event) => setAnchorEl(event.currentTarget)} 
+  sx={{ 
+    display: 'flex', 
+    alignItems: 'center', 
+    gap: 1.5, 
+    mb: 1, 
+    ml: 2, 
+    cursor: 'pointer', 
+    p: 0.5, 
+    px: 1, // Um pouco mais de respiro lateral
+    borderRadius: 'md', 
+    transition: '0.2s',
+    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' } 
+  }}
+>
+  <Typography 
+    level="title-sm" 
+    sx={{ 
+      color: 'white', 
+      fontWeight: 500,
+      opacity: 0.9 // Deixa o nome sutilmente menos brilhante que o ícone
+    }}
+  >
+    {userName}
+  </Typography>
+  
+  <Avatar 
+    size="sm" 
+    variant="solid" // Mudamos de soft para solid para dar mais peso
+    sx={{ 
+      bgcolor: 'rgba(255,255,255,0.25)', // Branco suave
+      color: '#FFFFFF', // Ícone totalmente branco
+      border: '1px solid rgba(255,255,255,0.3)' // Borda fina para dar nitidez
+    }}
+  >
+    <PersonIcon sx={{ fontSize: 20 }} />
+  </Avatar>
+</Box>
 
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} size="sm" placement="bottom-end" sx={{ '--ListItem-radius': '8px', minWidth: 190, boxShadow: 'md', zIndex: 10000 }}>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} size="sm" placement="bottom-end" sx={{ borderRadius: '8px', minWidth: 190, boxShadow: 'lg', border: 'none' }}>
           <MenuItem onClick={() => { setAnchorEl(null); openNewTab('admin', 'Administração'); }}>
             <ListItemDecorator><SettingsIcon fontSize="small" /></ListItemDecorator>
             Administração
           </MenuItem>
           <Divider sx={{ my: 0.5 }} />
-          <MenuItem onClick={handleLogoutClick} sx={{ color: 'danger.plainColor' }}>
-            <ListItemDecorator><LogoutIcon fontSize="small" color="error" /></ListItemDecorator>
+          <MenuItem onClick={handleLogoutClick} sx={{ color: '#DC2626' }}>
+            <ListItemDecorator><LogoutIcon fontSize="small" sx={{ color: '#DC2626' }} /></ListItemDecorator>
             Sair do sistema
           </MenuItem>
         </Menu>
       </Sheet>
 
-      <Box sx={{ flex: 1, overflow: 'auto', bgcolor: 'background.body' }}>
-        <Box key={openTabs[activeTabIndex]?.refreshKey} sx={{ height: '100%' }}>
+      {/* CONTEÚDO */}
+      <Box sx={{ flex: 1, overflow: 'auto', bgcolor: '#F8FAFC' }}>
+        <Box key={openTabs[activeTabIndex]?.refreshKey} sx={{ height: '100%', p: 4 }}>
           {openTabs[activeTabIndex]?.id === 'home' ? (
             <GridFuncoes onOpenModule={openNewTab} />
           ) : (
-            <Box sx={{ p: 4 }}>
-              {openTabs[activeTabIndex]?.id === 'admin' ? (
-                <Box>
-                  <Typography level="h2">Administração do Sistema</Typography>
-                  <Typography level="body-md" sx={{ color: 'neutral.500', mb: 3 }}>
-                    Gerencie usuários, permissões e configurações gerais.
-                  </Typography>
-                </Box>
-              ) : (
-                <Box>
-                  <Typography level="h3">Módulo: {openTabs[activeTabIndex]?.label}</Typography>
-                  <Typography level="body-sm" sx={{ mt: 1, color: 'neutral.400' }}>
-                    ID: {openTabs[activeTabIndex]?.id} | Render: {openTabs[activeTabIndex]?.refreshKey}
-                  </Typography>
-                  <Typography level="body-md" sx={{ mt: 2 }}>
-                    Este módulo está em desenvolvimento.
-                  </Typography>
-                </Box>
-              )}
+            <Box>
+              <Typography level="h2">
+                {openTabs[activeTabIndex]?.label}
+              </Typography>
+              <Typography level="body-md" sx={{ mt: 1, color: '#475569' }}>
+                Este módulo está em desenvolvimento.
+              </Typography>
             </Box>
           )}
         </Box>
