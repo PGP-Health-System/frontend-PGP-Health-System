@@ -6,23 +6,25 @@ import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 import WarningIcon from '@mui/icons-material/Warning';
 
+// CORREÇÃO: A interface agora aceita o parâmetro 'name' que o App.tsx espera
 interface LoginProps {
-  onLogin: () => void;
+  onLogin: (name: string) => void;
 }
 
 export default function Login({ onLogin }: LoginProps) {
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
-  const [error, setError] = useState(false); // Estado para o erro
+  const [error, setError] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Simulação de login
     if (user === 'admin' && pass === '123') {
-      onLogin();
+      // Passamos o nome do usuário (ou o próprio login) para o onLogin
+      onLogin(user); 
     } else {
-      setError(true); // Ativa o Snackbar em vez do alert
+      setError(true);
     }
   };
 
@@ -34,11 +36,9 @@ export default function Login({ onLogin }: LoginProps) {
       height: '100vh', 
       width: '100vw',
       bgcolor: 'background.body',
-      // Reset de foco global na tela de login também
       '& *': { '--joy-focus-thickness': '0px !important', outline: 'none !important' } 
     }}>
       
-      {/* SNACKBAR DE ERRO ELEGANTE */}
       <Snackbar
         autoHideDuration={3000}
         open={error}
@@ -66,7 +66,7 @@ export default function Login({ onLogin }: LoginProps) {
           <Typography level="h2" fontWeight="xl" color="primary" sx={{ mb: 1 }}>
             PGP Health System
           </Typography>
-          <Typography level="body-sm" sx={{ color: 'white' }}>
+          <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
             Acesso Restrito
           </Typography>
         </Box>

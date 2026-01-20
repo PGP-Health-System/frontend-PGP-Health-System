@@ -121,7 +121,9 @@ export default function GridFuncoes({ onOpenModule }: GridFuncoesProps) {
                   width: '100%',
                   height: '100%' 
                 }}>
-                  {React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: '2.5rem' } })}
+                  {React.cloneElement(item.icon as React.ReactElement<any>, { 
+  sx: { fontSize: '2rem', mb: 1, color: '#1e3a8a' } 
+})}
                   <Typography level="title-sm" mt={1} textAlign="center">
                     {item.label}
                   </Typography>
